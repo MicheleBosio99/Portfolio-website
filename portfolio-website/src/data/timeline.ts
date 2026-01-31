@@ -26,18 +26,18 @@ export interface TimelineItem {
 }
 
 export const timelineItems: TimelineItem[] = [
-  {
-    id: 'unity-ar-2024',
-    title: 'Unity AR Interaction Framework',
-    description:
-      'Designed and implemented a modular AR interaction system with hand tracking and controller fallback.',
-    start: '2024-02',
-    end: '2024-07',
-    category: 'project',
-    color: '#10b981',
-    projectLink: '/projects/unity-ar-framework',
-    icon: '🕶️',
-    technologies: ['Unity', 'C#', 'OpenXR', 'AR Foundation'],
-    featured: true
-  },
+  // {
+  //   id: 'unity-ar-2024',
+  //   title: 'Unity AR Interaction Framework',
+  //   description:
+  //     'Designed and implemented a modular AR interaction system with hand tracking and controller fallback.',
+  //   start: '2024-02',
+  //   end: '2024-07',
+  //   category: 'project',
+  //   color: '#10b981',
+  //   projectLink: '/projects/unity-ar-framework',
+  //   icon: '🕶️',
+  //   technologies: ['Unity', 'C#', 'OpenXR', 'AR Foundation'],
+  //   featured: true
+  // },
 ];

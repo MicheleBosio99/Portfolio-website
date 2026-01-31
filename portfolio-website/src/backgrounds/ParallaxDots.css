@@ -1,0 +1,57 @@
+.parallax-dots-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+
+  /* Parallax variables */
+  --parallax-x: 0;
+  --parallax-y: 0;
+}
+
+/* Base dot style */
+.dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--text-secondary);
+  border-radius: 50%;
+  opacity: 0.4;
+  transition: transform 0.1s linear;
+}
+
+/* Depth layers */
+.layer-back {
+  transform: translate(
+    calc(var(--parallax-x) * -10px),
+    calc(var(--parallax-y) * -10px)
+  );
+  opacity: 0.15;
+}
+
+.layer-mid {
+  transform: translate(
+    calc(var(--parallax-x) * -20px),
+    calc(var(--parallax-y) * -20px)
+  );
+  opacity: 0.25;
+}
+
+.layer-front {
+  transform: translate(
+    calc(var(--parallax-x) * -35px),
+    calc(var(--parallax-y) * -35px)
+  );
+  opacity: 0.35;
+}
+
+/* Optional: subtle breathing animation */
+.dot {
+  animation: breathe 6s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+  from { transform: scale(1); }
+  to   { transform: scale(1.4); }
+}

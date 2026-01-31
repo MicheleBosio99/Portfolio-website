@@ -89,3 +89,8 @@
     gap: 1rem;
   }
 }
+
+.under-construction {
+  margin-top: 5rem;
+  font-weight: bolder;
+}

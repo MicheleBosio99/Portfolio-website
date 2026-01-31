@@ -8,11 +8,18 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ title, image, link }) => {
+  const children = <img src={image} alt={title} />
   return (
     <div className="project-card">
-      <a href={link} className="card-image" target="_blank" rel="noopener noreferrer">
-        <img src={image} alt={title} />
-      </a>
+      {link ? (
+        <a href={link} className="card-image" target="_blank" rel="noopener noreferrer">
+          {children}
+        </a>
+      ) : (
+        <div className="card-image">
+          {children}
+        </div>
+      )}
       <h3 className="card-title">{title}</h3>
     </div>
   );

@@ -6,7 +6,7 @@ const Home: React.FC = () => {
     <div className="home">
       <div className="hero-content">
         <h1>Michele Bosio's Portfolio</h1>
-        <p className="subtitle">AAA</p>
+        <p className="subtitle">Computer Scientist & Software Engineer</p>
         <div className="description">
           <p>
             <div className='profile-description'>
@@ -21,8 +21,12 @@ const Home: React.FC = () => {
             Explore my projects to see what I've built, check out my skills 
             to learn about my expertise, or get in touch to discuss your next project.
           </p>
+
+          <div className='under-construction'>
+            Note: this web page is still under construction, some features are not available or not complete.
+          </div>
         </div>
-        <div className="stats">
+        {/* <div className="stats">
           <div className="stat-item">
             <h3>5+</h3>
             <p>Years Experience</p>
@@ -35,7 +39,7 @@ const Home: React.FC = () => {
             <h3>30+</h3>
             <p>Happy Clients</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -13,8 +13,8 @@
 .projects-intro {
   text-align: center;
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  font-size: 1.05rem;
+  margin-bottom: 0rem;
+  font-size: 1rem;
 }
 
 .category-filter {

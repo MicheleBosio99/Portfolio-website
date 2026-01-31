@@ -19,6 +19,7 @@ const Timeline: React.FC = () => {
       <h1>My Timeline</h1>
       <p className="timeline-intro">
         A journey through my professional, technical, and personal milestones.
+        <div className='under-construction'>This page is currently under construction...</div>
       </p>
 
       <div className="timeline-container">

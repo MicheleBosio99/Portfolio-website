@@ -13,19 +13,36 @@ export const skillCategories: SkillCategory[] = [
   {
     group: 'languages',
     title: 'Programming Languages',
-    skills: ['TypeScript', 'JavaScript', 'Python', 'C#', 'C++'],
+    skills: [
+      'C#', 'C++', 'C',
+      'Python',
+      'SQL',
+      'Dart',
+      'React', 'Typescript', 'HTML/5', 'CSS/3'
+    ],
     color: '#4a9eff'
   },
   {
     group: 'frameworks',
-    title: 'Frameworks & Libraries',
-    skills: ['React', 'Next.js', 'Unity', 'Node.js', 'Tailwind CSS'],
+    title: 'Frameworks & Technologies',
+    skills: [
+      'Unity', 'Monogame',
+      'Flutter',
+      'PyTorch', 'TensorFlow'
+    ],
     color: '#10b981'
   },
   {
     group: 'others',
-    title: 'Tools & Other Skills',
-    skills: ['Git', 'Docker', 'Linux', 'Figma', 'CI/CD'],
+    title: 'Tools &\nOther Skills',
+    skills: [
+      'Git', 'Github',
+      'Docker',
+      'Firebase',
+      'Vulkan', 'OpenGL',
+
+      'Problem solving', 'Team working', 'Ownership'
+    ],
     color: '#f59e0b'
   }
 ];

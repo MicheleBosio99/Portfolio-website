@@ -6,7 +6,7 @@ import './Projects.css';
 const Projects: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>('All');
 
-  const categories: ProjectCategory[] = ['All', 'Web', 'Mobile', 'Design', 'Other'];
+  const categories: ProjectCategory[] = ['All', 'Games', 'App', 'Web', 'ML/AI', 'Others'];
 
   const filteredProjects = selectedCategory === 'All' 
     ? projects 
@@ -15,9 +15,6 @@ const Projects: React.FC = () => {
   return (
     <div className="projects">
       <h1>My Projects</h1>
-      <p className="projects-intro">
-        Here are some of the projects I've worked on. Click on any card to learn more.
-      </p>
       
       <div className="category-filter">
         {categories.map(category => (
