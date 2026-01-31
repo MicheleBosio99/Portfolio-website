@@ -140,8 +140,5 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
-claude-portfolio-1
-claude-portfolio-2
-claude-portfolio-3.5
-src/deprecated
-portfolio-website/todo.md
+
+todo.md
