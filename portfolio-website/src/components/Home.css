@@ -34,6 +34,16 @@
   line-height: 1.8;
   margin-bottom: 1rem;
   font-size: 1.05rem;
+
+  background-color: var(--bg-tertiary);
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.divider {
+  color: var(--bg-tertiary);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .stats {

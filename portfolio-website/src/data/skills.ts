@@ -1,4 +1,9 @@
+// skills.ts
+
+export type SkillGroup = 'languages' | 'frameworks' | 'others';
+
 export interface SkillCategory {
+  group: SkillGroup;
   title: string;
   skills: string[];
   color: string;
@@ -6,42 +11,21 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
   {
-    title: 'Frontend',
-    skills: [
-      'React',
-      'TypeScript',
-      'JavaScript',
-      'HTML5',
-      'CSS3',
-      'Tailwind CSS',
-      'Next.js'
-    ],
+    group: 'languages',
+    title: 'Programming Languages',
+    skills: ['TypeScript', 'JavaScript', 'Python', 'C#', 'C++'],
     color: '#4a9eff'
   },
   {
-    title: 'Backend',
-    skills: [
-      'Node.js',
-      'Express',
-      'Python',
-      'Django',
-      'PostgreSQL',
-      'MongoDB',
-      'REST APIs'
-    ],
+    group: 'frameworks',
+    title: 'Frameworks & Libraries',
+    skills: ['React', 'Next.js', 'Unity', 'Node.js', 'Tailwind CSS'],
     color: '#10b981'
   },
   {
-    title: 'Tools & Others',
-    skills: [
-      'Git',
-      'Docker',
-      'AWS',
-      'Firebase',
-      'Figma',
-      'CI/CD',
-      'Agile'
-    ],
+    group: 'others',
+    title: 'Tools & Other Skills',
+    skills: ['Git', 'Docker', 'Linux', 'Figma', 'CI/CD'],
     color: '#f59e0b'
   }
 ];

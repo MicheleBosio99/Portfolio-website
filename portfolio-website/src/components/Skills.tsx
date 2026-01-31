@@ -17,23 +17,21 @@ const Skills: React.FC = () => {
 
       const allTags = container.querySelectorAll('.skill-tag');
       const targetRect = target.getBoundingClientRect();
-      
-      allTags.forEach((tag) => {
+
+      allTags.forEach(tag => {
         if (tag === target) return;
-        
+
         const tagRect = tag.getBoundingClientRect();
         const dx = targetRect.left - tagRect.left;
         const dy = targetRect.top - tagRect.top;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        
+
         if (distance < 200) {
-          const delay = (distance / 200) * 100; // Max 100ms delay based on distance
-          
+          const delay = (distance / 200) * 100;
+
           setTimeout(() => {
-            (tag as HTMLElement).classList.add('wave-active');
-            setTimeout(() => {
-              (tag as HTMLElement).classList.remove('wave-active');
-            }, 500);
+            tag.classList.add('wave-active');
+            setTimeout(() => tag.classList.remove('wave-active'), 500);
           }, delay);
         }
       });
@@ -41,62 +39,61 @@ const Skills: React.FC = () => {
 
     const createParticles = (x: number, y: number) => {
       const particleCount = 8;
-      
+
       for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = `${x}px`;
         particle.style.top = `${y}px`;
-        
+
         const angle = (Math.PI * 2 * i) / particleCount;
         const velocity = 50 + Math.random() * 50;
         const tx = Math.cos(angle) * velocity;
         const ty = Math.sin(angle) * velocity;
-        
+
         particle.style.setProperty('--tx', `${tx}px`);
         particle.style.setProperty('--ty', `${ty}px`);
-        
+
         document.body.appendChild(particle);
-        
         setTimeout(() => particle.remove(), 1000);
       }
     };
 
     container.addEventListener('mouseenter', handleMouseEnter, true);
-
-    return () => {
-      container.removeEventListener('mouseenter', handleMouseEnter, true);
-    };
+    return () => container.removeEventListener('mouseenter', handleMouseEnter, true);
   }, []);
 
   return (
     <div className="skills" ref={containerRef}>
       <h1>Skills & Technologies</h1>
       <p className="skills-intro">
-        Here are the technologies and tools I work with regularly.
+        A structured overview of the technologies I use most.
       </p>
-      <div className="skills-container">
+
+      <div className="skills-grid">
         {skillCategories.map((category, index) => (
-          <div 
-            key={index} 
-            className="skill-category"
-            style={{ animationDelay: `${index * 0.1}s` }}
+          <div
+            key={index}
+            className="skills-column-card"
+            style={{
+              borderColor: category.color
+            }}
           >
-            <div className="category-header">
-              <div 
-                className="category-icon"
-                style={{ backgroundColor: category.color }}
-              ></div>
-              <h2>{category.title}</h2>
-            </div>
-            <div className="skill-tags">
+            <h2
+              className="skills-column-title"
+              style={{ color: category.color }}
+            >
+              {category.title}
+            </h2>
+
+            <div className="skill-tags-grid">
               {category.skills.map((skill, idx) => (
-                <span 
-                  key={idx} 
+                <span
+                  key={idx}
                   className="skill-tag"
-                  style={{ 
-                    animationDelay: `${(index * 0.1) + (idx * 0.05)}s`,
-                    '--hover-color': category.color 
+                  style={{
+                    '--hover-color': category.color,
+                    animationDelay: `${(index * 0.1) + (idx * 0.05)}s`
                   } as React.CSSProperties}
                 >
                   {skill}

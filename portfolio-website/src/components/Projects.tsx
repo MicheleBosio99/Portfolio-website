@@ -32,13 +32,18 @@ const Projects: React.FC = () => {
       </div>
 
       <div className="projects-grid">
-        {filteredProjects.map(project => (
-          <ProjectCard
+        {filteredProjects.map((project, index) => (
+          <div
             key={project.id}
-            title={project.title}
-            image={project.image}
-            link={project.link}
-          />
+            className="project-fade-wrapper fade-in"
+            style={{ animationDelay: `${index * 0.15}s` }}
+          >
+            <ProjectCard
+              title={project.title}
+              image={project.image}
+              link={project.link}
+            />
+          </div>
         ))}
       </div>
     </div>

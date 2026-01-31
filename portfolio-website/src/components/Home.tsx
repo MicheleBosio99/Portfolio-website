@@ -5,14 +5,18 @@ const Home: React.FC = () => {
   return (
     <div className="home">
       <div className="hero-content">
-        <h1>Welcome to My Portfolio</h1>
-        <p className="subtitle">Building Amazing Digital Experiences</p>
+        <h1>Michele Bosio's Portfolio</h1>
+        <p className="subtitle">AAA</p>
         <div className="description">
           <p>
-            I'm a passionate developer specializing in creating modern, 
-            responsive, and user-friendly web applications. With a focus on 
-            clean code and exceptional design, I bring ideas to life.
+            <div className='profile-description'>
+              Currently wrapping up my Master Thesis focused on an XR Multiplayer Application. Passionate about immersive technologies, creative problem‑
+              solving, and building systems that scale. Background in Software Development, Machine Learning, and Data Science, with a evergreen interest
+              in the Videogames industry. Always eager to learn new tools and technologies when the challenge demands it. Looking for opportunities to
+              contribute to innovative teams solving complex problems.
+            </div>
           </p>
+          <div className="divider"></div>
           <p>
             Explore my projects to see what I've built, check out my skills 
             to learn about my expertise, or get in touch to discuss your next project.

@@ -1,0 +1,23 @@
+.ascii-noise-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ascii-noise-char {
+  position: absolute;
+  font-family: monospace;
+  color: var(--text-secondary);
+  user-select: none;
+  white-space: pre;
+  transform-origin: center;
+  animation: drift 20s linear infinite;
+}
+
+@keyframes drift {
+  0%   { transform: translate(0px, 0px) rotate(0deg); }
+  50%  { transform: translate(10px, -10px) rotate(180deg); }
+  100% { transform: translate(0px, 0px) rotate(360deg); }
+}

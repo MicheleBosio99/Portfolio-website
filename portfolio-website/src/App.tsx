@@ -6,6 +6,7 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Timeline from './components/Timeline';
 import CurriculumVitae from './components/CurriculumVitae'
+
 import HexGrid from './backgrounds/HexGrid';
 
 import './App.css';
