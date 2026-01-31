@@ -1,0 +1,48 @@
+import React, { useState } from 'react';
+import ProjectCard from './ProjectCard';
+import { projects, ProjectCategory } from '../data/projects';
+import './Projects.css';
+
+const Projects: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>('All');
+
+  const categories: ProjectCategory[] = ['All', 'Web', 'Mobile', 'Design', 'Other'];
+
+  const filteredProjects = selectedCategory === 'All' 
+    ? projects 
+    : projects.filter(p => p.category === selectedCategory);
+
+  return (
+    <div className="projects">
+      <h1>My Projects</h1>
+      <p className="projects-intro">
+        Here are some of the projects I've worked on. Click on any card to learn more.
+      </p>
+      
+      <div className="category-filter">
+        {categories.map(category => (
+          <button
+            key={category}
+            className={selectedCategory === category ? 'active' : ''}
+            onClick={() => setSelectedCategory(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      <div className="projects-grid">
+        {filteredProjects.map(project => (
+          <ProjectCard
+            key={project.id}
+            title={project.title}
+            image={project.image}
+            link={project.link}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Projects;

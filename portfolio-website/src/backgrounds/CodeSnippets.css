@@ -1,0 +1,29 @@
+.code-snippets-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.code-snippet {
+  position: absolute;
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  white-space: nowrap;
+  animation: float-code infinite linear;
+  user-select: none;
+}
+
+@keyframes float-code {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+  }
+}
