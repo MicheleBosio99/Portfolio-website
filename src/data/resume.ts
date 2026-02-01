@@ -64,14 +64,23 @@ export const education: EducationEntry[] = [
 export const workExperience: WorkEntry[] = [
   {
     id: "work-1",
-    company: "Local Pizzeria",
-    location: "Casnigo, BG, Italy",
-    role: "NOT SOFTWARE RELATED - Pizza Maker",
-    start: "2018",
-    end: "2023",
-    accomplishments: [
-      "Learned to work efficiently under the pressure of peak rush hours",
-      "Maintained direct communication and positive rapport with customers",
-    ]
-  }
+    company: "Software Engineer",
+    location: "Bergamo / Milan, Italy",
+    role: "Looking up to new opportunities...",
+    start: "Apr. 2026",
+    end: "",
+    accomplishments: []
+  },
+  // {
+  //   id: "work-1",
+  //   company: "Local Pizzeria",
+  //   location: "Casnigo, BG, Italy",
+  //   role: "NOT SOFTWARE RELATED - Pizza Maker",
+  //   start: "2018",
+  //   end: "2023",
+  //   accomplishments: [
+  //     "Learned to work efficiently under the pressure of peak rush hours",
+  //     "Maintained direct communication and positive rapport with customers",
+  //   ]
+  // }
 ];
