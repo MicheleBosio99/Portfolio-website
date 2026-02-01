@@ -39,6 +39,8 @@ const Projects: React.FC = () => {
               title={project.title}
               image={project.image}
               link={project.link}
+              description={project.description}
+              tech={project.tech}
             />
           </div>
         ))}

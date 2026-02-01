@@ -15,6 +15,8 @@ export interface Project {
   image: string;
   link: string;
   category: ProjectCategory;
+  description: string;
+  tech: string[];
 }
 
 export const projects: Project[] = [
@@ -24,6 +26,8 @@ export const projects: Project[] = [
     image: logo,
     link: "https://github.com/MicheleBosio99/Portfolio-website",
     category: "Web",
+    description: "Portfolio website implementation to showcase my skills and projects.",
+    tech: ["Web", "React", "Typescript", "HTML", "CSS", "Vercel"]
   },
   {
     id: 1,
@@ -31,6 +35,8 @@ export const projects: Project[] = [
     image: jenga,
     link: "",
     category: "Others",
+    description: "Master Thesis - Unity mixed reality application. Contains haptic gloves implementation.",
+    tech: ["Unity", "C#", "Meta SDK", "WeArt SDK"]
   },
   {
     id: 2,
@@ -38,6 +44,8 @@ export const projects: Project[] = [
     image: ros,
     link: "",
     category: "Others",
+    description: "ROS1 challenge for input handling, room scanning and self-driving.",
+    tech: ["ROS1", "C++", "SLAM", "tmux"]
   },
   {
     id: 3,
@@ -45,6 +53,8 @@ export const projects: Project[] = [
     image: pacman,
     link: "https://github.com/MicheleBosio99/Pacman3D_ProjectCG",
     category: "Games",
+    description: "Vulkan implementation of Pacman in 3D using graphics basics and low level APIs",
+    tech: ["Vulkan", "C++", "Computer Graphics", "VS2022"]
   },
   {
     id: 4,
@@ -52,6 +62,8 @@ export const projects: Project[] = [
     image: pokedima,
     link: "",
     category: "App",
+    description: "Flutter/Dart mobile application of a Social Network for scanning and sharing pokemon cards.",
+    tech: ["Flutter", "Dart", "NoSQL Firebase"]
   },
   {
     id: 5,
@@ -59,6 +71,8 @@ export const projects: Project[] = [
     image: reclaimHumanity,
     link: "https://polimi-game-collective.itch.io/reclaim-humanity",
     category: "Games",
+    description: "Unity 2D RPG videogame. Contains custom logic, graphics, sounds.",
+    tech: ["Unity", "C#", "Tiled", "Itch.io"]
   },
   {
     id: 7,
@@ -66,5 +80,7 @@ export const projects: Project[] = [
     image: rl,
     link: "",
     category: "ML/AI",
+    description: "Scripts for a series of online monthly challenges.",
+    tech: ["Python", "Selenium", "Reinforcement Learning"]
   },
 ];
