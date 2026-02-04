@@ -10,16 +10,10 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({title, image, link, description, tech}) => {
-  return (
+  const content = (
     <div className="project-card">
       <div className="card-image-wrapper">
-        {link ? (
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            <img src={image} alt={title} />
-          </a>
-        ) : (
-          <img src={image} alt={title} />
-        )}
+        <img src={image} alt={title} />
 
         {/* Overlay */}
         <div className="card-overlay">
@@ -36,6 +30,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({title, image, link, descriptio
       <h3 className="card-title">{title}</h3>
     </div>
   );
+
+  return link ? (
+  <a href={link} target="_blank" rel="noopener noreferrer" className="project-card-link">{content}</a>) :
+  (content);
 };
 
 export default ProjectCard;

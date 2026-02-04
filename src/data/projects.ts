@@ -60,7 +60,7 @@ export const projects: Project[] = [
     id: 4,
     title: "PokeDima",
     image: pokedima,
-    link: "",
+    link: "https://github.com/MicheleBosio99/PokeDima",
     category: "App",
     description: "Flutter/Dart mobile application of a Social Network for scanning and sharing pokemon cards.",
     tech: ["Flutter", "Dart", "NoSQL Firebase"]
