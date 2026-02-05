@@ -23,7 +23,7 @@ const Home: React.FC = () => {
           </p>
 
           <div className='under-construction'>
-            Note: this web page is still under construction, some features are not available or not complete.
+            Note: this web page is still under development, some features are not available or not complete.
           </div>
         </div>
         {/* <div className="stats">
