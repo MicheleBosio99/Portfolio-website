@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ProjectCard.css';
 
+/** How long the "private repository" notice stays up after a click. */
+const NOTICE_DURATION_MS = 4000;
+
 interface ProjectCardProps {
   title: string;
   image: string;
@@ -17,23 +20,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({title, image, link, descriptio
   // Don't leave a timer running if the card unmounts (e.g. category filter change).
   useEffect(() => () => window.clearTimeout(timeoutRef.current), []);
 
-  const hidePrivateNotice = () => {
-    window.clearTimeout(timeoutRef.current);
-    setShowPrivateNotice(false);
-  };
-
   const revealPrivateNotice = () => {
+    /*
+      Fixed duration, independent of hover: the notice stays put even if the
+      pointer leaves the card, so the message is readable on the way out.
+      Clicking again restarts the 4 seconds rather than stacking timers.
+    */
     window.clearTimeout(timeoutRef.current);
     setShowPrivateNotice(true);
-
-    /*
-      On a mouse the notice is dismissed by leaving the card. Touch screens
-      never fire mouseleave, so they get a timed fallback instead — otherwise
-      the message would be stuck on the card forever.
-    */
-    if (window.matchMedia('(hover: none)').matches) {
-      timeoutRef.current = window.setTimeout(() => setShowPrivateNotice(false), 3200);
-    }
+    timeoutRef.current = window.setTimeout(
+      () => setShowPrivateNotice(false),
+      NOTICE_DURATION_MS
+    );
   };
 
   const content = (
@@ -87,8 +85,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({title, image, link, descriptio
         type="button"
         className="project-card-link project-card-private"
         onClick={revealPrivateNotice}
-        onMouseLeave={hidePrivateNotice}
-        onBlur={hidePrivateNotice}
         aria-label={`${title} — private repository, source not publicly available`}
       >
         {content}
