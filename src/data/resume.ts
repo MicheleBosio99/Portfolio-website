@@ -33,7 +33,7 @@ export const education: EducationEntry[] = [
     location: "Milan, Italy",
     degree: "Master's Degree in Software Engineering and Computer Science",
     start: "Sept. 2022",
-    end: "Expected Mar. 2026",
+    end: "Jul. 2026",
     link: "https://www.polimi.it",
     accomplishments: [
       "Master Thesis on an XR Multiplayer Physics Interaction System",

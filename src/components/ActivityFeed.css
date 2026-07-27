@@ -1,0 +1,73 @@
+.activity-feed {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.activity-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.activity-item:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border);
+}
+
+.activity-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Private work is still shown, just visually distinguished and unnamed. */
+.activity-dot.is-private {
+  background: transparent;
+  border: 0.125rem solid var(--text-secondary);
+}
+
+.activity-text {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  min-width: 0;
+}
+
+.activity-time {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.activity-empty {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+@media (max-width: 900px) {
+  .activity-item {
+    grid-template-columns: auto 1fr;
+    row-gap: 0.15rem;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .activity-text {
+    font-size: 0.8rem;
+  }
+
+  /* Timestamp drops under the description instead of squeezing it. */
+  .activity-time {
+    grid-column: 2;
+  }
+}

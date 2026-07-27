@@ -2,6 +2,80 @@
    PROJECT CARD (BASE)
 ========================= */
 
+.project-card-link {
+  display: block;
+  color: inherit;
+}
+
+/* Private cards are <button>s — strip the UA chrome so they match the anchors. */
+.project-card-private {
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: inherit;
+  color: inherit;
+}
+
+.project-card-private:focus-visible {
+  outline: 0.125rem solid var(--accent);
+  outline-offset: 0.25rem;
+  border-radius: 0.75rem;
+}
+
+/* =========================
+   PRIVATE REPO AFFORDANCES
+========================= */
+
+.private-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+/* Get out of the way on hover so it never sits on top of the overlay text. */
+.project-card:hover .private-badge {
+  opacity: 0;
+}
+
+.private-notice {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.75rem;
+  background: rgba(10, 10, 10, 0.92);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  text-align: center;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  pointer-events: none;
+}
+
+.private-notice.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
 .project-card {
   display: block;
   cursor: pointer;
@@ -17,10 +91,10 @@
 ========================= */
 
 .card-image {
-  height: 200px;
+  height: 12.5rem;
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,7 +119,7 @@
 
 .project-card:hover .card-image {
   border-color: var(--accent);
-  box-shadow: 0 8px 24px rgba(74, 158, 255, 0.2);
+  box-shadow: 0 0.5rem 1.5rem rgba(74, 158, 255, 0.2);
 }
 
 /* =========================
@@ -58,6 +132,7 @@
   color: var(--text-primary);
   text-align: center;
   font-weight: 600;
+  overflow-wrap: break-word;
 }
 
 /* =========================
@@ -103,7 +178,7 @@
 
 /* Float */
 .anim-float:hover .card-image img {
-  transform: translateY(-8px);
+  transform: translateY(-0.5rem);
 }
 
 /* Fade */
@@ -114,9 +189,9 @@
 /* Wrap image + overlay */
 .card-image-wrapper {
   position: relative;
-  height: 200px;
+  height: 12.5rem;
   width: 100%;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   overflow: hidden;
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
@@ -139,14 +214,15 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
   color: white;
-  padding-left: 0.2rem;
-  padding-right: 0.2rem;
+  padding: 0.6rem 0.4rem;
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(0.625rem);
   transition: opacity 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* Never scrolls — descriptions are kept short enough to fit the card. */
+  overflow: hidden;
 }
 
 /* Hover reveal */
@@ -168,6 +244,7 @@
   height: 1px;
   background: rgba(255, 255, 255, 0.4);
   margin: 0 auto 0.8rem auto;
+  flex-shrink: 0;
 }
 
 /* Tech list */
@@ -186,5 +263,14 @@
 .overlay-tech li {
   background: rgba(255, 255, 255, 0.15);
   padding: 0.25rem 0.5rem;
-  border-radius: 6px;
+  border-radius: 0.375rem;
+}
+
+/* Touch screens have no real hover: the :hover state can stick after a tap
+   and leave a card shrunk. Card + image stay, only the shrink is dropped.
+   (The overlay stays hover-only — see note in the summary.) */
+@media (hover: none) {
+  .project-card:hover {
+    transform: none;
+  }
 }

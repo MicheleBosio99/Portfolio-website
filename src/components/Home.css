@@ -13,8 +13,11 @@
 
 .hero-content h1 {
   font-size: 2.5rem;
+  line-height: 1.2;
   margin-bottom: 1rem;
   color: var(--text-primary);
+  /* Long words break instead of forcing horizontal overflow on tiny screens. */
+  overflow-wrap: break-word;
 }
 
 .subtitle {
@@ -40,7 +43,9 @@
   padding: 1rem;
 }
 
-.divider {
+/* Namespaced: a bare .divider also exists in Sidebar.css, and because plain
+   CSS is global these two were bleeding into each other. */
+.home-divider {
   color: var(--bg-tertiary);
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -48,7 +53,8 @@
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Reflows 3 → 2 → 1 columns on its own; no breakpoint needed. */
+  grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr));
   gap: 1.5rem;
   max-width: 100%;
   margin: 0 auto;
@@ -58,13 +64,13 @@
   text-align: center;
   padding: 1.5rem;
   background: var(--bg-tertiary);
-  border-radius: 12px;
+  border-radius: 0.75rem;
   border: 1px solid var(--border);
   transition: transform 0.3s;
 }
 
 .stat-item:hover {
-  transform: translateY(-5px);
+  transform: translateY(-0.3rem);
   border-color: var(--accent);
 }
 
@@ -79,18 +85,32 @@
   font-size: 0.9rem;
 }
 
-@media (max-width: 768px) {
-  .hero-content h1 {
-    font-size: 2rem;
-  }
-
-  .stats {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+.under-construction {
+  margin-top: 3rem;
+  font-weight: bolder;
 }
 
-.under-construction {
-  margin-top: 5rem;
-  font-weight: bolder;
+@media (max-width: 900px) {
+  .hero-content h1 {
+    font-size: 1.9rem;
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .description {
+    padding: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .description p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .under-construction {
+    margin-top: 1.5rem;
+  }
 }

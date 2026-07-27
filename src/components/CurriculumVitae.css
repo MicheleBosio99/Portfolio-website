@@ -1,13 +1,25 @@
 .cv-page {
+  /* The rail geometry lives in variables so the entry markers stay glued to
+     the vertical line instead of relying on a hand-measured -66px offset. */
+  --cv-rail: 5rem;
+  --cv-gutter: 1rem;
+  --cv-marker: 0.875rem;
+  --cv-marker-ring: 0.1875rem;
+  /* box-sizing is border-box globally, so --cv-marker is ALREADY the full
+     rendered width — the ring is drawn inside it, not added to it. The
+     box-shadow ring outside is symmetric, so it doesn't shift the centre. */
+  --cv-marker-outer: var(--cv-marker);
+
   width: 100%;
-  padding: 0rem 2rem;
-  max-width: 1100px;
+  padding: 0 2rem;
+  max-width: 68.75rem;
   margin: 0 auto;
   color: var(--text-primary);
 }
 
 .cv-page h1 {
   font-size: 2.5rem;
+  line-height: 1.2;
   margin-bottom: 1rem;
   color: var(--text-primary);
   text-align: center;
@@ -20,7 +32,8 @@
 }
 
 .cv-left {
-  width: 80px;
+  width: var(--cv-rail);
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
   position: relative;
@@ -39,16 +52,17 @@
 }
 
 .cv-line {
-  width: 3px;
+  width: 0.1875rem;
   background: var(--border);
   flex-grow: 1;
-  border-radius: 2px;
+  border-radius: 0.125rem;
 }
 
 /* RIGHT SIDE */
 .cv-right {
   flex: 1;
-  padding-left: 1rem;
+  min-width: 0;
+  padding-left: var(--cv-gutter);
 }
 
 .cv-section-title {
@@ -64,20 +78,27 @@
   padding-left: 2rem;
 }
 
+/*
+  Centre the marker on the rail line.
+  The entry's left edge sits at (rail + gutter) from the section start, and
+  the line runs down the middle of the rail at (rail / 2). So walk back by
+  the difference, then by half the marker to centre it.
+*/
 .cv-entry-marker {
   position: absolute;
-  left: -66px;
-  top: 12px;
-  width: 14px;
-  height: 14px;
+  left: calc(-1 * (var(--cv-rail) / 2 + var(--cv-gutter) + var(--cv-marker-outer) / 2));
+  top: 0.75rem;
+  width: var(--cv-marker);
+  height: var(--cv-marker);
   background: var(--accent);
   border-radius: 50%;
-  border: 3px solid var(--bg-primary);
-  box-shadow: 0 0 0 3px var(--border);
+  border: var(--cv-marker-ring) solid var(--bg-primary);
+  box-shadow: 0 0 0 var(--cv-marker-ring) var(--border);
 }
 
 .cv-entry-title {
   font-size: 1.3rem;
+  line-height: 1.3;
   margin-bottom: 0.3rem;
 }
 
@@ -112,7 +133,7 @@
   background: var(--accent);
   color: white;
   padding: 0.8rem 1.6rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   font-weight: 600;
   text-decoration: none;
   transition: 0.2s ease;
@@ -120,4 +141,44 @@
 
 .cv-download-btn:hover {
   opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .cv-page {
+    /* Narrow the rail; the marker offset follows automatically. */
+    --cv-rail: 2.25rem;
+    --cv-gutter: 0.5rem;
+
+    padding: 0;
+  }
+
+  .cv-page h1 {
+    font-size: 1.9rem;
+  }
+
+  .cv-section {
+    margin-bottom: 2.25rem;
+  }
+
+  .cv-icon {
+    font-size: 1.5rem;
+  }
+
+  .cv-section-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .cv-entry {
+    padding-left: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .cv-entry-title {
+    font-size: 1.1rem;
+  }
+
+  .cv-download-container {
+    justify-content: center;
+  }
 }

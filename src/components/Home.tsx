@@ -8,15 +8,15 @@ const Home: React.FC = () => {
         <h1>Michele Bosio's Portfolio</h1>
         <p className="subtitle">Computer Scientist & Software Engineer</p>
         <div className="description">
-          <p>
-            <div className='profile-description'>
-              Currently wrapping up my Master Thesis focused on an XR Multiplayer Application. Passionate about immersive technologies, creative problem‑
-              solving, and building systems that scale. Background in Software Development, Machine Learning, and Data Science, with a evergreen interest
-              in the Videogames industry. Always eager to learn new tools and technologies when the challenge demands it. Looking for opportunities to
-              contribute to innovative teams solving complex problems.
-            </div>
+          <p className='profile-description'>
+            Recently finished up my Master Thesis focused on the implementation of a XR Multiplayer Application for Quest 3 using Unity engine.
+            Passionate about immersive technologies, creative problem solving, and building systems that are reliable, well-tought and consistent.
+            Background in Software Development, Machine Learning, and Data Science, with a evergreen interest in the videogames industry.
+            Always eager to learn new tools and technologies when the challenge demands it.
+            <br/><br/>
+            <b>Currently looking for opportunities to contribute to innovative teams solving complex problems.</b>
           </p>
-          <div className="divider"></div>
+          <div className="home-divider"></div>
           <p>
             Explore my projects to see what I've built, check out my skills 
             to learn about my expertise, or get in touch to discuss your next project.

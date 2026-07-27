@@ -41,6 +41,7 @@ const Projects: React.FC = () => {
               link={project.link}
               description={project.description}
               tech={project.tech}
+              isPrivate={project.isPrivate}
             />
           </div>
         ))}

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import './HexGrid.css';
 
+type Hexagon = { x: number; y: number; value: string; opacity: number };
+
 const HexGrid: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -11,26 +13,51 @@ const HexGrid: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    let hexagons: Hexagon[] = [];
+    let hexSize = 30;
+    let width = 0;
+    let height = 0;
 
-    const hexagons: Array<{ x: number; y: number; value: string; opacity: number }> = [];
-    const hexSize = 30;
-    const cols = Math.ceil(canvas.width / (hexSize * 1.5)) + 1;
-    const rows = Math.ceil(canvas.height / (hexSize * Math.sqrt(3))) + 1;
+    const randomHexDigit = () =>
+      Math.floor(Math.random() * 16).toString(16).toUpperCase();
 
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        const x = col * hexSize * 1.5;
-        const y = row * hexSize * Math.sqrt(3) + (col % 2) * hexSize * Math.sqrt(3) / 2;
-        hexagons.push({
-          x,
-          y,
-          value: Math.random() > 0.5 ? Math.floor(Math.random() * 16).toString(16).toUpperCase() : '',
-          opacity: Math.random() * 0.3
-        });
+    /*
+      Size the canvas to its CSS box and rebuild the grid.
+
+      The old version resized the backing store on window resize but kept the
+      hexagon list from the original size, so enlarging the window left an
+      unfilled band. It also ignored devicePixelRatio, which made the grid
+      blurry on high-DPI laptops and phones.
+    */
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      // Setting canvas.width resets the transform, so re-apply it here.
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      hexSize = width < 768 ? 20 : 30;
+
+      const cols = Math.ceil(width / (hexSize * 1.5)) + 1;
+      const rows = Math.ceil(height / (hexSize * Math.sqrt(3))) + 1;
+
+      hexagons = [];
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          hexagons.push({
+            x: col * hexSize * 1.5,
+            y:
+              row * hexSize * Math.sqrt(3) +
+              (col % 2) * hexSize * Math.sqrt(3) / 2,
+            value: Math.random() > 0.5 ? randomHexDigit() : '',
+            opacity: Math.random() * 0.3,
+          });
+        }
       }
-    }
+    };
 
     let mouseX = -1000;
     let mouseY = -1000;
@@ -40,19 +67,21 @@ const HexGrid: React.FC = () => {
       mouseY = e.clientY;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    let frameId = 0;
 
     const animate = () => {
+      const glowRadius = hexSize * 6.5;
+
       ctx.fillStyle = '#1a1a1a';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, width, height);
 
       hexagons.forEach(hex => {
         const dist = Math.sqrt((hex.x - mouseX) ** 2 + (hex.y - mouseY) ** 2);
-        const glow = Math.max(0, 1 - dist / 200);
+        const glow = Math.max(0, 1 - dist / glowRadius);
 
         ctx.save();
         ctx.translate(hex.x, hex.y);
-        
+
         ctx.strokeStyle = `rgba(74, 158, 255, ${hex.opacity + glow * 0.5})`;
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -68,7 +97,7 @@ const HexGrid: React.FC = () => {
 
         if (hex.value) {
           ctx.fillStyle = `rgba(176, 176, 176, ${hex.opacity})`;
-          ctx.font = '10px monospace';
+          ctx.font = `${Math.round(hexSize / 3)}px monospace`;
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(hex.value, 0, 0);
@@ -78,24 +107,32 @@ const HexGrid: React.FC = () => {
       });
 
       // Random flips
-      if (Math.random() < 0.01) {
+      if (hexagons.length && Math.random() < 0.01) {
         const hex = hexagons[Math.floor(Math.random() * hexagons.length)];
-        hex.value = Math.floor(Math.random() * 16).toString(16).toUpperCase();
+        hex.value = randomHexDigit();
       }
 
-      requestAnimationFrame(animate);
+      frameId = requestAnimationFrame(animate);
     };
 
+    // Coalesce resize bursts (and mobile address-bar show/hide) into one rebuild.
+    let resizeId = 0;
+    const handleResize = () => {
+      cancelAnimationFrame(resizeId);
+      resizeId = requestAnimationFrame(resize);
+    };
+
+    resize();
     animate();
 
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('resize', handleResize);
 
     return () => {
+      // Without these the loop kept running after unmount — and under
+      // React StrictMode that meant two loops drawing at once in dev.
+      cancelAnimationFrame(frameId);
+      cancelAnimationFrame(resizeId);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
     };

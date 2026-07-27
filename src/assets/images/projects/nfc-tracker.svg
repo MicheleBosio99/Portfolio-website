@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="NFC Tracker tag and signal">
+  <!-- tag body -->
+  <rect x="26" y="34" width="98" height="132" rx="14"
+        fill="#1f6f56" stroke="#10b981" stroke-width="5"/>
+  <rect x="26" y="34" width="98" height="30" rx="14"
+        fill="#10b981"/>
+  <rect x="26" y="52" width="98" height="12" fill="#10b981"/>
+
+  <!-- tag hole -->
+  <circle cx="75" cy="49" r="6" fill="#0d3d2f"/>
+
+  <!-- rows of logged scans -->
+  <g fill="#8ff0cd">
+    <rect x="42" y="82"  width="66" height="8" rx="4"/>
+    <rect x="42" y="102" width="52" height="8" rx="4" opacity="0.8"/>
+    <rect x="42" y="122" width="60" height="8" rx="4" opacity="0.62"/>
+    <rect x="42" y="142" width="40" height="8" rx="4" opacity="0.45"/>
+  </g>
+
+  <!-- NFC signal arcs -->
+  <g fill="none" stroke="#4a9eff" stroke-width="9" stroke-linecap="round">
+    <path d="M132 74 A 40 40 0 0 1 132 126"/>
+    <path d="M150 58 A 66 66 0 0 1 150 142" opacity="0.72"/>
+    <path d="M168 42 A 92 92 0 0 1 168 158" opacity="0.42"/>
+  </g>
+</svg>

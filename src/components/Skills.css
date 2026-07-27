@@ -5,6 +5,7 @@
 .skills h1 {
   text-align: center;
   font-size: 2.5rem;
+  line-height: 1.2;
   color: var(--text-primary);
   margin-bottom: 1rem;
 }
@@ -17,11 +18,17 @@
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Three columns on desktop, as designed. minmax(0, 1fr) — rather than a bare
+     1fr — lets the tracks shrink below their content instead of overflowing;
+     the fluid root size keeps them readable at every width. They collapse to a
+     single column at the mobile breakpoint below. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2.5rem;
-  max-width: 1300px;
+  max-width: 81.25rem;
   margin: 0 auto;
-  align-items: start;
+  /* stretch (not start) so the three cards end up the same height even when
+     their tags wrap to a different number of rows. */
+  align-items: stretch;
 }
 
 .skills-column {
@@ -30,27 +37,24 @@
   align-items: center;
 }
 
-.skills-column-title {
-  font-size: 1.6rem;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  white-space: pre-line;
-}
-
 .skills-column-card {
   background: var(--bg-tertiary);
   border: 2px solid;
-  border-radius: 16px;
+  border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  min-width: 0;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.25);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .skills-column-title {
   font-size: 1.6rem;
+  line-height: 1.25;
   margin-bottom: 1.5rem;
   font-weight: 700;
   text-align: center;
+  white-space: pre-line;
+  overflow-wrap: break-word;
 }
 
 .skill-tags-grid {
@@ -65,7 +69,7 @@
   background: var(--bg-secondary);
   color: var(--text-primary);
   padding: 0.5rem 0.8rem;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   border: 1px solid var(--border);
   font-size: 0.85rem;
   text-align: center;
@@ -75,8 +79,8 @@
 }
 
 .skill-tag:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+  transform: translateY(-0.25rem) scale(1.05);
+  box-shadow: 0 0.75rem 1.75rem rgba(0, 0, 0, 0.35);
   color: var(--hover-color);
 }
 
@@ -118,14 +122,14 @@
     transform: translateY(0) scale(1);
   }
   50% {
-    transform: translateY(-10px) scale(1);
+    transform: translateY(-0.625rem) scale(1);
   }
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(1.875rem);
   }
   to {
     opacity: 1;
@@ -153,12 +157,26 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .skills h1 {
-    font-size: 2rem;
+    font-size: 1.9rem;
   }
 
-  .skill-category {
-    padding: 1.5rem;
+  .skills-intro {
+    margin-bottom: 1.5rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .skills-column-card {
+    padding: 1.25rem;
+  }
+
+  .skills-column-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
   }
 }

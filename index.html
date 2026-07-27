@@ -2,9 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover pairs with the 100dvh shell so the layout reaches
+         the edges on notched phones instead of leaving safe-area bands. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="description" content="Portfolio of Michele Bosio — Computer Scientist & Software Engineer." />
     <title>Michele Bosio Portfolio</title>
-    <link rel="icon" type="image/png" href="src/assets/images/logo.png" />
+    <!-- Served from public/, so it resolves in the production build too.
+         The old "src/assets/images/logo.png" only existed during dev. -->
+    <link rel="icon" type="image/png" href="/logo.png" />
   </head>
   <body>
     <div id="root"></div>

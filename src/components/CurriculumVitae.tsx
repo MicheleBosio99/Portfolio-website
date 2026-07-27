@@ -1,6 +1,7 @@
 import './CurriculumVitae.css';
 import { education, workExperience } from '../data/resume';
 import { FaGraduationCap, FaBriefcase } from 'react-icons/fa';
+import cvPdf from '../assets/pdf/Michele_Bosio_CV_Slim.pdf';
 
 const CurriculumVitae: React.FC = () => {
   return (
@@ -85,7 +86,7 @@ const CurriculumVitae: React.FC = () => {
 
       {/* DOWNLOAD BUTTON */}
       <div className="cv-download-container">
-        <a href="src/assets/images/pdf/Michele_Bosio_CV_Slim.pdf" download className="cv-download-btn">
+        <a href={cvPdf} download="Michele_Bosio_CV.pdf" className="cv-download-btn">
           Download Resume
         </a>
       </div>

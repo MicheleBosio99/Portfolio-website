@@ -9,6 +9,7 @@ export interface SkillCategory {
   color: string;
 }
 
+// The three groups are kept at the same length so the columns read as a set.
 export const skillCategories: SkillCategory[] = [
   {
     group: 'languages',
@@ -18,7 +19,8 @@ export const skillCategories: SkillCategory[] = [
       'Python',
       'SQL',
       'Dart',
-      'React', 'Typescript', 'HTML/5', 'CSS/3'
+      'Javascript', 'React', 'Typescript', 'HTML/5', 'CSS/3',
+      'GLSL', 'XML',
     ],
     color: '#4a9eff'
   },
@@ -27,8 +29,12 @@ export const skillCategories: SkillCategory[] = [
     title: 'Frameworks & Technologies',
     skills: [
       'Unity', 'Monogame',
+      'Meta XR SDK',
       'Flutter',
-      'PyTorch', 'TensorFlow'
+      'ROS',
+      'PyTorch', 'TensorFlow', 'Pandas', 'NumPy',
+      'Selenium',
+      'Docker',
     ],
     color: '#10b981'
   },
@@ -37,11 +43,11 @@ export const skillCategories: SkillCategory[] = [
     title: 'Tools &\nOther Skills',
     skills: [
       'Git', 'Github',
-      'Docker',
       'Firebase',
       'Vulkan', 'OpenGL',
-
-      'Problem solving', 'Team working', 'Ownership'
+      'Agile',
+      'Problem solving', 'Team working', 'Ownership',
+      'Communication', 'Fast learning'
     ],
     color: '#f59e0b'
   }

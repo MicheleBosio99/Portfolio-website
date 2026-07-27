@@ -8,6 +8,33 @@
   --text-secondary: #b0b0b0;
   --accent: #4a9eff;
   --border: #3a3a3a;
+
+  /* Layout knobs. Everything is in rem so it rides the fluid root size below. */
+  --shell-max-width: 100rem;
+  --shell-padding-block: 3rem;
+  --shell-padding-inline: 2rem;
+  --shell-gap: 2rem;
+  --sidebar-width: 17.5rem;
+  --main-max-width: 75rem;
+  --radius-panel: 1.25rem;
+}
+
+/*
+  FLUID ROOT FONT SIZE — the core of the responsive strategy.
+
+  Nearly every size in this project is expressed in rem, so this single
+  declaration rescales the entire UI with the viewport instead of pinning it
+  to the one window it was designed in.
+
+  Using rem (not px) for the clamp values means the whole scale still respects
+  the reader's browser font-size preference, so the numbers below are relative
+  to whatever their default is (16px on a stock browser, but not everyone's).
+
+  On a 16px default:  ~14px @ 1280w   ~18.5px @ 1920w   capped at 20px
+  On a 20px default:  ~17px @ 1280w   ~20.5px @ 1920w   capped at 25px
+*/
+html {
+  font-size: clamp(0.75rem, 0.55vw + 0.5rem, 1.25rem);
 }
 
 * {
@@ -21,8 +48,17 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
+  min-height: 100dvh;
+  /* The outer page never scrolls; panels scroll internally. */
   overflow: hidden;
-  height: 100vh;
+  -webkit-text-size-adjust: 100%;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
 }
 
 a {
@@ -32,4 +68,39 @@ a {
 
 button {
   cursor: pointer;
+  font: inherit;
+}
+
+/* Stacked layout: tighten the shell so content keeps as much room as possible. */
+@media (max-width: 900px) {
+  :root {
+    --shell-padding-block: 1rem;
+    --shell-padding-inline: 0.75rem;
+    --shell-gap: 0.75rem;
+  }
+
+  html {
+    /* Below the stacking breakpoint the layout is single-column, so text can
+       go back to a comfortable reading size instead of continuing to shrink. */
+    font-size: clamp(0.875rem, 3.4vw, 1.0625rem);
+  }
+}
+
+/* Short viewports: phone landscape, 768p laptops, half-height windows. */
+@media (max-height: 600px) {
+  :root {
+    --shell-padding-block: 1rem;
+    --shell-gap: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
