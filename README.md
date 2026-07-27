@@ -57,17 +57,37 @@ browser.
 ### One-time setup
 
 1. **Create a token** — GitHub → Settings → Developer settings → Personal access
-   tokens → *Fine-grained token*, with the **`read:user`** account permission.
-   Nothing more is needed.
+   tokens → *Fine-grained token*, with:
+   - **Repository access: All repositories** — required, otherwise private
+     repositories are invisible and the activity list will only ever show
+     public work.
+   - **Repository permissions → Contents: Read-only** (this is what exposes
+     commit history). *Metadata: Read-only* is added automatically.
+   - **Account permissions → Profile: Read-only**, for the contribution
+     calendar.
 2. **Add it to Vercel** — project → Settings → Environment Variables →
    `GITHUB_TOKEN` = the token. Add it for Production and Preview.
 3. **Redeploy.**
 
-Optionally set `GITHUB_LOGIN` if the username ever changes; it defaults to
-`MicheleBosio99`.
-
 For private work to be counted in the heatmap totals, also enable
 GitHub → Settings → Profile → **"Include private contributions on my profile"**.
+
+### Hiding or anonymising repositories
+
+By default, private repositories appear as "a private project" with no name.
+Public repositories can be given the same treatment, or removed entirely, via
+environment variables (comma-separated repo names, no owner prefix):
+
+| Variable | Effect |
+| --- | --- |
+| `ACTIVITY_ANONYMISE` | Activity is still listed, but the repo is unnamed — identical to a private repo |
+| `ACTIVITY_HIDDEN` | Repo is omitted from the feed entirely |
+
+Example: `ACTIVITY_ANONYMISE=client-work,side-experiment`
+
+Both can also be edited directly in `api/contributions.js` (the
+`ANONYMISE_REPOS` / `HIDDEN_REPOS` arrays) if you would rather keep the lists
+in version control. The environment variable wins when both are set.
 
 ### Rules
 
@@ -90,7 +110,11 @@ npx vercel dev
 
 ### Caching
 
-Responses are cached at the edge for 30 minutes
-(`s-maxage=1800, stale-while-revalidate=86400`), so GitHub is called roughly
-twice an hour regardless of traffic — far inside the 5,000 requests/hour limit
-for an authenticated token.
+Responses are cached at the edge for 5 minutes
+(`s-maxage=300, stale-while-revalidate=86400`), so GitHub is called at most a
+handful of times an hour regardless of traffic — far inside the 5,000
+requests/hour limit for an authenticated token — while still reflecting a push
+promptly.
+
+If a push does not appear, wait out that 5-minute cache before assuming the
+token is wrong.

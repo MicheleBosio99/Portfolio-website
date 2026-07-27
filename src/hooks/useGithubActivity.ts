@@ -28,6 +28,8 @@ export interface ActivityEvent {
 export interface GithubActivity {
   calendar: ContributionCalendar | null;
   activity: ActivityEvent[];
+  /** Size of the commit-history window the activity list covers, in days. */
+  windowDays?: number;
   generatedAt: string;
 }
 

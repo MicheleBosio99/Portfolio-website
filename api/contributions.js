@@ -10,31 +10,54 @@
 
   The browser only ever sees the sanitised JSON returned at the bottom.
 
-  SETUP (done once, by you, in the Vercel dashboard)
-  -------------------------------------------------
-    1. GitHub → Settings → Developer settings → Personal access tokens
-       → Fine-grained token, with the "read:user" account permission.
-    2. Vercel → your project → Settings → Environment Variables
-       → add GITHUB_TOKEN = <the token>.
-    3. Redeploy.
+  WHY NOT THE EVENTS API
+  ----------------------
+  The obvious source for "latest updates" is /users/{login}/events, but it is
+  unreliable here: fine-grained tokens routinely return only *public* events
+  from it, and the feed lags behind reality. Pushes to private repos simply
+  never showed up. Commit history via GraphQL is authoritative instead — it
+  reflects a push immediately and always includes private repositories the
+  token can read.
 
-  Never commit the token to the repo. If it is ever exposed, revoke it on
-  GitHub immediately — a leaked token is not fixable by deleting the commit.
-
-  For private contributions to appear in the totals, also enable
-  GitHub → Settings → Profile → "Include private contributions on my profile".
+  SETUP — see README.md. The token needs repository read access, not just
+  read:user, or private work will be missing.
 
   PRIVACY
   -------
-  Private repositories are reduced to a count and an anonymous label. Repo
-  names and commit messages from private repos are never returned.
+  Private repositories are reduced to a commit count and an anonymous label.
+  Repo names and commit messages from private repos never reach the browser.
+  Public repos can be anonymised or hidden too, via the lists below.
 */
 
-const GITHUB_LOGIN = process.env.GITHUB_LOGIN || 'MicheleBosio99';
+/*
+  Activity is still listed, but the repository is not named — it appears as
+  "a private project", exactly like a genuinely private repo.
+  Names are matched case-insensitively, without the owner prefix.
+*/
+const ANONYMISE_REPOS = [
+  // 'some-public-repo',
+];
 
-const CALENDAR_QUERY = `
-  query($login: String!) {
-    user(login: $login) {
+/* Omitted from the feed entirely, as if it did not exist. */
+const HIDDEN_REPOS = [
+  // 'scratch-repo',
+];
+
+/** Env vars win over the arrays above, so lists can change without a code deploy. */
+function listFromEnv(name, fallback) {
+  const raw = process.env[name];
+  if (!raw) return fallback.map(entry => entry.toLowerCase());
+  return raw
+    .split(',')
+    .map(entry => entry.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+const ACTIVITY_WINDOW_DAYS = 90;
+
+const ACTIVITY_QUERY = `
+  query($since: GitTimestamp!) {
+    viewer {
       contributionsCollection {
         contributionCalendar {
           totalContributions
@@ -47,22 +70,33 @@ const CALENDAR_QUERY = `
           }
         }
       }
+      repositories(
+        first: 50
+        orderBy: { field: PUSHED_AT, direction: DESC }
+        affiliations: [OWNER]
+        isFork: false
+      ) {
+        nodes {
+          name
+          isPrivate
+          pushedAt
+          defaultBranchRef {
+            target {
+              ... on Commit {
+                history(first: 1, since: $since) {
+                  totalCount
+                  nodes { committedDate }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;
 
-/** Events we can describe in plain language. Anything else is dropped. */
-const EVENT_LABELS = {
-  PushEvent: 'Pushed',
-  CreateEvent: 'Created',
-  PullRequestEvent: 'Pull request',
-  IssuesEvent: 'Issue',
-  ReleaseEvent: 'Released',
-  ForkEvent: 'Forked',
-  WatchEvent: 'Starred',
-};
-
-async function fetchCalendar(token) {
+async function queryGitHub(token, since) {
   const response = await fetch('https://api.github.com/graphql', {
     method: 'POST',
     headers: {
@@ -70,10 +104,7 @@ async function fetchCalendar(token) {
       'Content-Type': 'application/json',
       'User-Agent': 'portfolio-website',
     },
-    body: JSON.stringify({
-      query: CALENDAR_QUERY,
-      variables: { login: GITHUB_LOGIN },
-    }),
+    body: JSON.stringify({ query: ACTIVITY_QUERY, variables: { since } }),
   });
 
   if (!response.ok) {
@@ -84,10 +115,16 @@ async function fetchCalendar(token) {
   if (payload.errors?.length) {
     throw new Error(payload.errors[0].message);
   }
+  if (!payload.data?.viewer) {
+    throw new Error('No viewer in GraphQL response');
+  }
 
-  const calendar =
-    payload.data?.user?.contributionsCollection?.contributionCalendar;
-  if (!calendar) throw new Error('No contribution calendar in response');
+  return payload.data.viewer;
+}
+
+function buildCalendar(viewer) {
+  const calendar = viewer.contributionsCollection?.contributionCalendar;
+  if (!calendar) return null;
 
   return {
     totalContributions: calendar.totalContributions,
@@ -101,48 +138,37 @@ async function fetchCalendar(token) {
   };
 }
 
-async function fetchActivity(token) {
-  // Authenticated: this includes private events, which we redact below.
-  const response = await fetch(
-    `https://api.github.com/users/${GITHUB_LOGIN}/events?per_page=100`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github+json',
-        'User-Agent': 'portfolio-website',
-      },
-    }
-  );
+function buildActivity(viewer) {
+  const anonymise = listFromEnv('ACTIVITY_ANONYMISE', ANONYMISE_REPOS);
+  const hidden = listFromEnv('ACTIVITY_HIDDEN', HIDDEN_REPOS);
 
-  if (!response.ok) {
-    throw new Error(`GitHub events responded ${response.status}`);
-  }
+  const nodes = viewer.repositories?.nodes ?? [];
 
-  const events = await response.json();
-  if (!Array.isArray(events)) return [];
+  return nodes
+    .map(repo => {
+      const history = repo.defaultBranchRef?.target?.history;
+      const commits = history?.totalCount ?? 0;
+      if (commits === 0) return null;
 
-  return events
-    .filter(event => EVENT_LABELS[event.type])
-    .map(event => {
-      const isPrivate = event.public === false;
+      const key = repo.name.toLowerCase();
+      if (hidden.includes(key)) return null;
+
+      // Anonymised public repos are indistinguishable from real private ones.
+      const treatAsPrivate = repo.isPrivate || anonymise.includes(key);
 
       return {
-        type: event.type,
-        date: event.created_at,
-        isPrivate,
-        // Redaction: private repo names never leave this function.
-        repo: isPrivate ? null : event.repo?.name?.split('/').pop() ?? null,
-        commits:
-          event.type === 'PushEvent'
-            ? event.payload?.size ?? event.payload?.commits?.length ?? 0
-            : 0,
-        // Only ever a coarse ref TYPE ("branch"/"tag"), never the branch name,
-        // which can itself describe unreleased private work.
-        refType: event.type === 'CreateEvent' ? event.payload?.ref_type ?? null : null,
-        action: event.payload?.action ?? null,
+        type: 'PushEvent',
+        date: history?.nodes?.[0]?.committedDate ?? repo.pushedAt,
+        isPrivate: treatAsPrivate,
+        repo: treatAsPrivate ? null : repo.name,
+        commits,
+        refType: null,
+        action: null,
       };
     })
-    .slice(0, 30);
+    .filter(Boolean)
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 12);
 }
 
 export default async function handler(_req, res) {
@@ -156,26 +182,27 @@ export default async function handler(_req, res) {
     return;
   }
 
+  const since = new Date(
+    Date.now() - ACTIVITY_WINDOW_DAYS * 86_400_000
+  ).toISOString();
+
   try {
-    // One failing half shouldn't blank the whole panel.
-    const [calendarResult, activityResult] = await Promise.allSettled([
-      fetchCalendar(token),
-      fetchActivity(token),
-    ]);
+    const viewer = await queryGitHub(token, since);
 
-    if (calendarResult.status === 'rejected' && activityResult.status === 'rejected') {
-      throw calendarResult.reason;
-    }
-
-    // Cached at the edge: GitHub is hit about twice an hour, not once per visitor.
+    /*
+      Short cache. Long enough that GitHub is hit a handful of times an hour
+      no matter the traffic, short enough that a push shows up promptly —
+      the whole point of the panel is that it looks live.
+    */
     res.setHeader(
       'Cache-Control',
-      'public, s-maxage=1800, stale-while-revalidate=86400'
+      'public, s-maxage=300, stale-while-revalidate=86400'
     );
 
     res.status(200).json({
-      calendar: calendarResult.status === 'fulfilled' ? calendarResult.value : null,
-      activity: activityResult.status === 'fulfilled' ? activityResult.value : [],
+      calendar: buildCalendar(viewer),
+      activity: buildActivity(viewer),
+      windowDays: ACTIVITY_WINDOW_DAYS,
       generatedAt: new Date().toISOString(),
     });
   } catch (error) {

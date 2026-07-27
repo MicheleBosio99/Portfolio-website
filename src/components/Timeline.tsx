@@ -54,6 +54,7 @@ const Timeline: React.FC = () => {
               <h3 className="timeline-activity-heading">Latest updates</h3>
               <ActivityFeed events={data.activity} />
               <p className="timeline-activity-note">
+                Commit activity from the last {data.windowDays ?? 90} days.
                 Work in private repositories is shown without naming the project.
               </p>
             </div>
