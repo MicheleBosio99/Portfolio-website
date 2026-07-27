@@ -45,7 +45,7 @@ const projectList: Project[] = [
     id: 1,
     title: "Mixed Reality Jenga - Unity",
     image: jenga,
-    link: "",
+    link: "https://github.com/MicheleBosio99/MR_Jenga",
     category: "Others",
     lastUpdate: "2026-06-19",
     description: "Master Thesis - Unity mixed reality application. Contains haptic gloves implementation.",
