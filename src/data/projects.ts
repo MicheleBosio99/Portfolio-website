@@ -31,17 +31,6 @@ export interface Project {
 
 const projectList: Project[] = [
   {
-    id: 8,
-    title: "DungeonsAid",
-    image: dungeonsaid,
-    link: "",
-    category: "App",
-    isPrivate: true,
-    lastUpdate: "2026-07-26",
-    description: "Tabletop-RPG companion app that transcribes table talk to look up rules live.",
-    tech: ["Flutter", "Dart", "Speech Recognition", "Firebase"]
-  },
-  {
     id: 1,
     title: "Mixed Reality Jenga - Unity",
     image: jenga,
@@ -52,24 +41,15 @@ const projectList: Project[] = [
     tech: ["Unity", "C#", "Meta SDK", "WeArt SDK"]
   },
   {
-    id: 9,
-    title: "NFC Attendance Tracker",
-    image: nfcTracker,
-    link: "https://github.com/MicheleBosio99/NFC_Tracker",
+    id: 8,
+    title: "DungeonsAid",
+    image: dungeonsaid,
+    link: "",
     category: "App",
-    lastUpdate: "2026-04-21",
-    description: "Flutter app for NFC tag tracking with IN/OUT history, stats and Excel export.",
-    tech: ["Flutter", "Dart", "NFC", "Firebase"]
-  },
-  {
-    id: 0,
-    title: "Porftolio Website",
-    image: website_logo,
-    link: "https://github.com/MicheleBosio99/Portfolio-website",
-    category: "Web",
-    lastUpdate: "2026-02-05",
-    description: "Portfolio website implementation to showcase my skills and projects.",
-    tech: ["Web", "React", "Typescript", "HTML", "CSS", "Vercel"]
+    isPrivate: true,
+    lastUpdate: "2026-07-26",
+    description: "Tabletop-RPG companion app that transcribes table talk to look up rules live.",
+    tech: ["Flutter", "Dart", "Speech Recognition", "Firebase"]
   },
   {
     id: 4,
@@ -120,6 +100,26 @@ const projectList: Project[] = [
     isPrivate: true,
     description: "Scripts for a series of online monthly challenges.",
     tech: ["Python", "Selenium", "Reinforcement Learning"]
+  },
+  {
+    id: 9,
+    title: "NFC Attendance Tracker",
+    image: nfcTracker,
+    link: "https://github.com/MicheleBosio99/NFC_Tracker",
+    category: "App",
+    lastUpdate: "2026-04-21",
+    description: "Flutter app for NFC tag tracking with IN/OUT history, stats and Excel export.",
+    tech: ["Flutter", "Dart", "NFC", "Firebase"]
+  },
+  {
+    id: 0,
+    title: "Porftolio Website",
+    image: website_logo,
+    link: "https://github.com/MicheleBosio99/Portfolio-website",
+    category: "Web",
+    lastUpdate: "2026-02-05",
+    description: "Portfolio website implementation to showcase my skills and projects.",
+    tech: ["Web", "React", "Typescript", "HTML", "CSS", "Vercel"]
   },
 ];
 
